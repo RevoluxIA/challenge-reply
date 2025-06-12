@@ -227,7 +227,129 @@ A solução final será comunicada através de:
 * **Relatório Final:** Este documento (PDD) atualizado e consolidado.
 * **Vídeo Pitch (2 minutos):** Um resumo conciso e impactante do projeto.
 
+### Diagram C4 - Nível 1
 ---
+```mermaid
+C4Context
+    title Diagrama de Contexto - RevoluxIA
+
+    Person(engenheiro, "Engenheiro de Manutenção", "Usuário que monitora e gerencia a manutenção dos equipamentos")
+    Person(gestor, "Gestor de Produção", "Responsável pela operação e produtividade da fábrica")
+    Person(cientista, "Cientista de Dados", "Responsável por análises e modelos de ML")
+
+    System(sistema, "Sistema RevoluxIA", "Sistema de manutenção preditiva que monitora equipamentos industriais usando IA e IoT")
+
+    System_Ext(equipamentos, "Equipamentos Industriais", "Máquinas e equipamentos monitorados com sensores IoT")
+
+    Rel(engenheiro, sistema, "Visualiza status e alertas")
+    Rel(gestor, sistema, "Recebe notificações de alertas")
+    Rel(cientista, sistema, "Acessa dados para análise")
+    Rel(equipamentos, sistema, "Envia dados dos sensores")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+``` 
+### Diagram C4 - Nível 2
+```mermaid
+C4Container
+    title Diagrama de Containers - RevoluxIA
+
+    Person(engenheiro, "Engenheiro de Manutenção", "Usuário que monitora e gerencia a manutenção dos equipamentos")
+    Person(gestor, "Gestor de Produção", "Responsável pela operação e produtividade da fábrica")
+    Person(cientista, "Cientista de Dados", "Responsável por análises e modelos de ML")
+
+    System_Boundary(sistema, "Sistema RevoluxIA") {
+        Container(web_app, "Aplicação Web", "React", "Interface do usuário para visualização de dashboards e alertas")
+        Container(api, "API Gateway", "AWS API Gateway", "API REST para comunicação entre frontend e backend")
+        Container(etl, "ETL Service", "AWS Lambda", "Processamento e transformação dos dados dos sensores")
+        Container(ml, "ML Service", "AWS SageMaker", "Modelos de machine learning para predição de falhas")
+        ContainerDb(db, "Database", "PostgreSQL/TimescaleDB", "Armazenamento de dados dos sensores e status dos equipamentos")
+        ContainerDb(s3, "Data Lake", "AWS S3", "Armazenamento de dados brutos para análise")
+    }
+
+    System_Ext(iot, "IoT Platform", "AWS IoT Core", "Gerenciamento de dispositivos IoT e mensagens MQTT")
+    System_Ext(equipamentos, "Equipamentos Industriais", "Máquinas e equipamentos monitorados com sensores IoT")
+
+    Rel(engenheiro, web_app, "Usa")
+    Rel(gestor, web_app, "Usa")
+    Rel(cientista, web_app, "Usa")
+    Rel(web_app, api, "Chama")
+    Rel(api, etl, "Chama")
+    Rel(api, ml, "Chama")
+    Rel(etl, db, "Lê/Escreve")
+    Rel(etl, s3, "Armazena")
+    Rel(ml, db, "Lê")
+    Rel(equipamentos, iot, "Envia dados")
+    Rel(iot, etl, "Notifica")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+```
+### Diagrama de sequeência
+```mermaid
+sequenceDiagram
+    participant E as Equipamento
+    participant I as IoT Core
+    participant L as Lambda
+    participant S as SageMaker
+    participant D as TimescaleDB
+    participant G as Grafana
+
+    E->>I: Envia dados dos sensores (MQTT)
+    I->>L: Notifica novo dado
+    L->>L: Valida e processa dados
+    L->>D: Armazena dados processados
+    L->>S: Envia dados para predição
+    S->>S: Executa modelo de ML
+    S->>L: Retorna predição
+    L->>D: Armazena status do equipamento
+    D->>G: Atualiza dashboard
+    Note over G: Exibe status em tempo real
+``` 
+### Diagram de classes
+```mermaid
+classDiagram
+    class Equipment {
+        +String equipment_id
+        +String model
+        +Date installation_date
+        +String status
+        +getStatus()
+        +updateStatus()
+    }
+
+    class SensorReading {
+        +DateTime timestamp
+        +String equipment_id
+        +float temperature_celsius
+        +float vibration_amplitude
+        +float current_amps
+        +validate()
+        +process()
+    }
+
+    class Prediction {
+        +DateTime timestamp
+        +String equipment_id
+        +String prediction
+        +float confidence
+        +String[] features
+        +calculateConfidence()
+    }
+
+    class Alert {
+        +DateTime timestamp
+        +String equipment_id
+        +String severity
+        +String message
+        +boolean is_resolved
+        +sendNotification()
+        +resolve()
+    }
+
+    Equipment "1" -- "many" SensorReading : has
+    Equipment "1" -- "many" Prediction : receives
+    Equipment "1" -- "many" Alert : generates
+    SensorReading "1" -- "1" Prediction : generates
+``` 
 
 # <a name="c6"></a>6. Referências
 
