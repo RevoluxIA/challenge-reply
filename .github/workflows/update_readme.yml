@@ -1,0 +1,44 @@
+# .github/workflows/update_readme.yml
+
+name: Update README with Repo Info
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run Python script to update README
+        # Passamos a variável do GitHub para o ambiente do script
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python ./scripts/update_readme.py
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "ds.ricardobsoares@gmail.com"
+          git config --local user.name "ricardobsoares"
+          git add README.md
+          if git diff --staged --quiet; then
+            echo "Nenhuma mudança no README para commitar."
+          else
+            git commit -m "Docs: Atualiza nome e link do repositório no README"
+            git push
+          fi
