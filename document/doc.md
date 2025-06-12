@@ -167,6 +167,42 @@ O MVP será considerado concluído ("Definition of Done") quando atender aos seg
 
 O fluxo de dados será: **ESP32 (Simulador)** -> **MQTT** -> **AWS IoT Core** -> **AWS Lambda** -> **(AWS RDS/TimescaleDB & AWS S3)**. Para inferência, a Lambda também fará uma chamada **HTTPS** para o endpoint do **SageMaker**, receberá a predição e a armazenará em uma tabela de status no RDS, que será lida pelo **Grafana**.
 
+```mermaid
+graph LR
+    subgraph "Dispositivo IoT"
+        ESP32[ESP32 Simulador]
+    end
+
+    subgraph "AWS Cloud"
+        MQTT[MQTT Broker]
+        IOT[AWS IoT Core]
+        LAMBDA[AWS Lambda]
+        SAGEMAKER[Amazon SageMaker]
+        RDS[(AWS RDS/TimescaleDB)]
+        S3[(AWS S3)]
+        GRAFANA[Grafana]
+    end
+
+    ESP32 -->|Publica dados| MQTT
+    MQTT -->|Recebe dados| IOT
+    IOT -->|Processa dados| LAMBDA
+    LAMBDA -->|Armazena dados brutos| RDS
+    LAMBDA -->|Armazena dados processados| S3
+    LAMBDA -->|Faz inferência| SAGEMAKER
+    SAGEMAKER -->|Retorna predição| LAMBDA
+    LAMBDA -->|Armazena status| RDS
+    RDS -->|Lê dados| GRAFANA
+
+    style ESP32 fill:#f9f,stroke:#333,stroke-width:2px,color:#000
+    style MQTT fill:#bbf,stroke:#333,stroke-width:2px,color:#000
+    style IOT fill:#bbf,stroke:#333,stroke-width:2px,color:#000
+    style LAMBDA fill:#bbf,stroke:#333,stroke-width:2px,color:#000
+    style SAGEMAKER fill:#bbf,stroke:#333,stroke-width:2px,color:#000
+    style RDS fill:#bfb,stroke:#333,stroke-width:2px,color:#000
+    style S3 fill:#bfb,stroke:#333,stroke-width:2px,color:#000
+    style GRAFANA fill:#fbb,stroke:#333,stroke-width:2px,color:#000
+``` 
+
 ## 4.3. Validação com a Empresa Parceira
 
 A validação ocorrerá através de uma **Sessão de Demonstração Interativa** na Sprint Review. Será apresentado o dashboard funcional e o fluxo de alertas. O feedback será coletado através de um questionário estruturado com perguntas sobre a clareza, relevância e usabilidade das informações apresentadas, guiando o backlog de refinamento da Sprint 4.
