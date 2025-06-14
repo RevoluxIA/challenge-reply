@@ -72,7 +72,7 @@ O circuito foi montado para integrar os sensores ao ESP32 através dos protocolo
 
 #### Esquema Visual
 
-<img src="assets/circuito.png" alt="Circuito" border="0">
+<img src="assets/sprint2/circuito.png" alt="Circuito" border="0">
 
 ***
 
@@ -103,21 +103,52 @@ O `loop` principal do sistema realiza as seguintes operações a cada 2 segundos
 
 **Vibração**
 </br>
-<img src="assets/monitor_serial_vibracao.png" alt="Print de dados de vibração" border="0">
+<img src="assets/sprint2/monitor_serial_vibracao.png" alt="Print de dados de vibração" border="0">
 
 **Amperagem**
 </br>
-<img src="assets/monitor_serial_amperagem.png" alt="Print de dados da amperagem" border="0">
+<img src="assets/sprint2/monitor_serial_amperagem.png" alt="Print de dados da amperagem" border="0">
 
 **Temperatura**
 </br>
-<img src="assets/monitor_serial_temperatura.png" alt="Print de dados da temperatura" border="0">
+<img src="assets/sprint2/monitor_serial_temperatura.png" alt="Print de dados da temperatura" border="0">
 
 ***
 
 ## 📈 Análise Inicial dos Dados
 
-Com os dados coletados no Monitor Serial, foi possível realizar uma análise exploratória inicial.
+Após a coleta dos dados através do Monitor Serial, realizamos uma análise exploratória. O objetivo foi identificar padrões, correlações e anomalias no comportamento do equipamento simulado.
+
+### Principais Insights e Conclusões
+
+A análise dos dados coletados revelou os seguintes comportamentos críticos sobre o equipamento:
+
+* **1. Relação Direta entre Consumo e Temperatura:** Foi identificada uma correlação positiva moderada (**coeficiente de 0.60**) entre a `Corrente_A` e a `Temperatura_C`. Isso comprova que, à medida que o equipamento consome mais energia, sua temperatura tende a aumentar significativamente, um fator de risco para superaquecimento.
+
+* **2. Frequência de Vibração:** O equipamento apresentou vibrações acima do limiar em **28 das 71 leituras**, o que significa que operou em estado de vibração anormal em aproximadamente **39% do tempo**. Embora muitos eventos fossem de baixa a média intensidade (magnitude entre 5-20), foi registrado um pico extremo de vibração (magnitude > 40), indicando uma falha pontual severa.
+
+* **3. Intensidade da Vibração Ligada à Carga:** A análise causal (Box Plot) mostrou que, embora a vibração ocorra em todos os regimes, sua **intensidade média é maior quando o equipamento opera com níveis de corrente mais altos**. Isso sugere que a carga de trabalho é um fator que agrava o estresse mecânico do sistema.
+
+* **4. Complexidade das Anomalias:** A vibração não possui uma correlação linear simples com a temperatura (coeficiente de 0.04) ou com a corrente (coeficiente de 0.11). Isso indica que as falhas de vibração não são causadas por um único fator, mas provavelmente por uma combinação mais complexa de condições de operação.
+
+### Modelos Gráficos Exploratórios
+
+Abaixo estão os gráficos gerados que fundamentam as conclusões acima.
+
+**Análise de Séries Temporais das Variáveis**
+<img src="assets/sprint2/graficos/series_temporais.png" alt="Gráfico da Série Temporal" border="0">
+
+**Correlação entre Corrente e Temperatura**
+<img src="assets/sprint2/graficos/correlacao_corrente_temperatura.png" alt="Gráfico da correlação de Corrente e Temperatura" border="0">
+
+**Análise da Vibração (Distribuição e Contagem)**
+<img src="assets/sprint2/graficos/analise_vibracao.png" alt="Gráfico da Análise da Vibração" border="0">
+
+**Magnitude da Vibração por Nível de Corrente**
+<img src="assets/sprint2/graficos/magnitude_vibracao_corrente.png" alt="Gráfico da Vibração por Nível de Corrente" border="0">
+
+**Mapa de Calor das Correlações**
+<img src="assets/sprint2/graficos/correlacao_calor.png" alt="Gráfico da correlações de temperatura" border="0">
 
 ## 📁 Estrutura de pastas
 
