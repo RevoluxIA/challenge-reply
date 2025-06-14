@@ -34,7 +34,7 @@ O objetivo principal deste projeto é desenvolver uma proposta de solução de m
 * **Sprint 3 - Construção do MVP:** Desenvolver um Mínimo Produto Viável (MVP) funcional, integrando o pipeline de dados com um modelo de Machine Learning inicial e um dashboard de visualização. O objetivo é validar o fluxo completo e a geração de valor da solução.
 * **Sprint 4 - Refinamento e Apresentação:** Iterar sobre o MVP com base no feedback da empresa parceira, refinar o modelo de ML, aprimorar a usabilidade do dashboard e preparar uma apresentação executiva e técnica do protótipo final.
 
-<br>
+---
 
 # <a name="c2"></a>2. Levantamento Teórico e Planejamento (Sprint 1)
 
@@ -91,8 +91,6 @@ O objetivo principal deste projeto é desenvolver uma proposta de solução de m
     * [ ] O acesso ao bucket deve ser controlado via políticas do IAM.
 
 ---
-
-<br>
 
 # <a name="c3"></a>3. Engenharia de Dados (Sprint 2)
 
@@ -152,8 +150,6 @@ Utilizaremos o TimescaleDB sobre PostgreSQL. A estrutura principal será:
 
 ---
 
-<br>
-
 # <a name="c4"></a>4. Desenvolvimento do MVP (Sprint 3)
 
 ## 4.1. Implementação Prática do MVP
@@ -208,7 +204,6 @@ graph LR
 A validação ocorrerá através de uma **Sessão de Demonstração Interativa** na Sprint Review. Será apresentado o dashboard funcional e o fluxo de alertas. O feedback será coletado através de um questionário estruturado com perguntas sobre a clareza, relevância e usabilidade das informações apresentadas, guiando o backlog de refinamento da Sprint 4.
 
 ---
-<br>
 
 # <a name="c5"></a>5. Entrega Final e Apresentação (Sprint 4)
 
@@ -227,63 +222,114 @@ A solução final será comunicada através de:
 * **Relatório Final:** Este documento (PDD) atualizado e consolidado.
 * **Vídeo Pitch (2 minutos):** Um resumo conciso e impactante do projeto.
 
+# <a name="c6"></a>6. Referências
+
+* AWS. (2024). *AWS Well-Architected Framework*.
+* Hermes Reply. (2024). *Site Institucional*. [https://www.reply.com/hermes-reply/pt](https://www.reply.com/hermes-reply/pt)
+* Nascimento, F. A., & Barchi, F. (2019). *NASA Turbofan Engine Degradation Simulation Data Set*. NASA.
+* Timescale. (2024). *TimescaleDB Documentation*.
+
+<br>
+
+# <a name="c7"></a>7. Anexos
 ### Diagram C4 - Nível 1
 ---
 ```mermaid
-C4Context
-    title Diagrama de Contexto - RevoluxIA
+graph TD
+    
+    classDef person fill:#1E2442,stroke:#A4BBEA,color:white
+    classDef system fill:#10132B,stroke:#A4BBEA,color:white
+    classDef extSystem fill:#464964,stroke:#A4BBEA,color:white
 
-    Person(engenheiro, "Engenheiro de Manutenção", "Usuário que monitora e gerencia a manutenção dos equipamentos")
-    Person(gestor, "Gestor de Produção", "Responsável pela operação e produtividade da fábrica")
-    Person(cientista, "Cientista de Dados", "Responsável por análises e modelos de ML")
+   
+    subgraph "Usuários"
+        engenheiro["<div style='font-weight:normal'>&lt;&lt;Person&gt;&gt;</div><div style='font-size:1.2em; font-weight:normal;'>Engenheiro de Manutenção</div><div style='font-size:0.9em; font-weight:normal'>Usuário que monitora e gerencia a<br/>manutenção dos equipamentos</div>"]
+        gestor["<div style='font-weight:normal'>&lt;&lt;Person&gt;&gt;</div><div style='font-size:1.2em; font-weight:normal;'>Gestor de Produção</div><div style='font-size:0.9em; font-weight:normal'>Responsável pela operação e<br/>produtividade da fábrica</div>"]
+        cientista["<div style='font-weight:normal'>&lt;&lt;Person&gt;&gt;</div><div style='font-size:1.2em; font-weight:normal;'>Cientista de Dados</div><div style='font-size:0.9em; font-weight:normal'>Responsável por análises e<br/>modelos de ML</div>"]
+    end
 
-    System(sistema, "Sistema RevoluxIA", "Sistema de manutenção preditiva que monitora equipamentos industriais usando IA e IoT")
+    subgraph "Sistemas"
+        sistema["<div style='font-weight:normal'>&lt;&lt;System&gt;&gt;</div><div style='font-size:1.2em; font-weight:normal;'>Sistema RevoluxIA</div><div style='font-size:0.9em; font-weight:normal'>Sistema de manutenção preditiva que<br/>monitora equipamentos industriais usando IA e IoT</div>"]
+        equipamentos["<div style='font-weight:normal'>&lt;&lt;External System&gt;&gt;</div><div style='font-size:1.2em; font-weight:normal;'>Equipamentos Industriais</div><div style='font-size:0.9em; font-weight:normal'>Máquinas e equipamentos monitorados<br/>com sensores IoT</div>"]
+    end
+    
+    
+    class engenheiro,gestor,cientista person
+    class sistema system
+    class equipamentos extSystem
+    
+    
+    engenheiro -->|<span style='color:white; font-weight:normal'>Visualiza status e alertas</span>| sistema
+    gestor     -->|<span style='color:white; font-weight:normal'>Recebe notificações de alertas</span>| sistema
+    cientista  -->|<span style='color:white; font-weight:normal'>Acessa dados para análise</span>| sistema
+    equipamentos -->|<span style='color:white; font-weight:normal'>Envia dados dos sensores</span>| sistema
 
-    System_Ext(equipamentos, "Equipamentos Industriais", "Máquinas e equipamentos monitorados com sensores IoT")
-
-    Rel(engenheiro, sistema, "Visualiza status e alertas")
-    Rel(gestor, sistema, "Recebe notificações de alertas")
-    Rel(cientista, sistema, "Acessa dados para análise")
-    Rel(equipamentos, sistema, "Envia dados dos sensores")
-
-    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+    
+    linkStyle default stroke:white,color:white
 ``` 
 ### Diagram C4 - Nível 2
 ```mermaid
-C4Container
-    title Diagrama de Containers - RevoluxIA
+graph TD
+    classDef person fill:#1E2442,stroke:#A4BBEA,color:white
+    classDef extSystem fill:#464964,stroke:#A4BBEA,color:white
+    classDef container fill:#18467B,stroke:#A4BBEA,color:white
+    classDef database fill:#7B1846,stroke:#A4BBEA,color:white
 
-    Person(engenheiro, "Engenheiro de Manutenção", "Usuário que monitora e gerencia a manutenção dos equipamentos")
-    Person(gestor, "Gestor de Produção", "Responsável pela operação e produtividade da fábrica")
-    Person(cientista, "Cientista de Dados", "Responsável por análises e modelos de ML")
+    subgraph "Usuários"
+        direction LR
+        engenheiro["<div style='font-weight:normal'>Engenheiro de Manutenção</div><div style='font-size:0.8em; font-weight:normal'>[Person]</div><div style='font-size:0.9em; font-weight:normal'>Monitora e gerencia a manutenção</div>"]
+        gestor["<div style='font-weight:normal'>Gestor de Produção</div><div style='font-size:0.8em; font-weight:normal'>[Person]</div><div style='font-size:0.9em; font-weight:normal'>Responsável pela operação</div>"]
+        cientista["<div style='font-weight:normal'>Cientista de Dados</div><div style='font-size:0.8em; font-weight:normal'>[Person]</div><div style='font-size:0.9em; font-weight:normal'>Responsável por análises e ML</div>"]
+    end
+    
+    subgraph "Sistemas Externos"
+        direction TB
+        equipamentos["<div style='font-weight:normal'>Equipamentos Industriais</div><div style='font-size:0.8em; font-weight:normal'>[External System]</div><div style='font-size:0.9em; font-weight:normal'>Máquinas com sensores IoT</div>"]
+        iot["<div style='font-weight:normal'>IoT Platform</div><div style='font-size:0.8em; font-weight:normal'>[AWS IoT Core]</div><div style='font-size:0.9em; font-weight:normal'>Gerenciamento de dispositivos</div>"]
+    end
 
-    System_Boundary(sistema, "Sistema RevoluxIA") {
-        Container(web_app, "Aplicação Web", "React", "Interface do usuário para visualização de dashboards e alertas")
-        Container(api, "API Gateway", "AWS API Gateway", "API REST para comunicação entre frontend e backend")
-        Container(etl, "ETL Service", "AWS Lambda", "Processamento e transformação dos dados dos sensores")
-        Container(ml, "ML Service", "AWS SageMaker", "Modelos de machine learning para predição de falhas")
-        ContainerDb(db, "Database", "PostgreSQL/TimescaleDB", "Armazenamento de dados dos sensores e status dos equipamentos")
-        ContainerDb(s3, "Data Lake", "AWS S3", "Armazenamento de dados brutos para análise")
-    }
+    subgraph "Sistema RevoluxIA"
+        direction TB
+        web_app["<div style='font-weight:normal'>Aplicação Web</div><div style='font-size:0.8em; font-weight:normal'>[Container: React]</div><div style='font-size:0.9em; font-weight:normal'>Interface do usuário</div>"]
+        api["<div style='font-weight:normal'>API Gateway</div><div style='font-size:0.8em; font-weight:normal'>[Container: AWS API Gateway]</div><div style='font-size:0.9em; font-weight:normal'>API REST para comunicação</div>"]
+        
+        subgraph "Processamento de Dados"
+            direction LR
+            etl["<div style='font-weight:normal'>ETL Service</div><div style='font-size:0.8em; font-weight:normal'>[Container: AWS Lambda]</div><div style='font-size:0.9em; font-weight:normal'>Transformação dos dados</div>"]
+            ml["<div style='font-weight:normal'>ML Service</div><div style='font-size:0.8em; font-weight:normal'>[Container: AWS SageMaker]</div><div style='font-size:0.9em; font-weight:normal'>Modelos de predição</div>"]
+        end
 
-    System_Ext(iot, "IoT Platform", "AWS IoT Core", "Gerenciamento de dispositivos IoT e mensagens MQTT")
-    System_Ext(equipamentos, "Equipamentos Industriais", "Máquinas e equipamentos monitorados com sensores IoT")
+        subgraph "Armazenamento"
+            direction LR
+            db["<div style='font-weight:normal'>Database</div><div style='font-size:0.8em; font-weight:normal'>[Database: PostgreSQL]</div><div style='font-size:0.9em; font-weight:normal'>Dados dos sensores e status</div>"]
+            s3["<div style='font-weight:normal'>Data Lake</div><div style='font-size:0.8em; font-weight:normal'>[Database: AWS S3]</div><div style='font-size:0.9em; font-weight:normal'>Dados brutos para análise</div>"]
+        end
+    end
 
-    Rel(engenheiro, web_app, "Usa")
-    Rel(gestor, web_app, "Usa")
-    Rel(cientista, web_app, "Usa")
-    Rel(web_app, api, "Chama")
-    Rel(api, etl, "Chama")
-    Rel(api, ml, "Chama")
-    Rel(etl, db, "Lê/Escreve")
-    Rel(etl, s3, "Armazena")
-    Rel(ml, db, "Lê")
-    Rel(equipamentos, iot, "Envia dados")
-    Rel(iot, etl, "Notifica")
+    class engenheiro,gestor,cientista person
+    class equipamentos,iot extSystem
+    class web_app,api,etl,ml container
+    class db,s3 database
 
-    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+    engenheiro -->|<span style='color:white; font-weight:normal'>Usa</span>| web_app
+    gestor -->|<span style='color:white; font-weight:normal'>Usa</span>| web_app
+    cientista -->|<span style='color:white; font-weight:normal'>Usa</span>| web_app
+    
+    web_app -->|<span style='color:white; font-weight:normal'>Chama</span>| api
+    
+    api -->|<span style='color:white; font-weight:normal'>Chama</span>| etl
+    api -->|<span style='color:white; font-weight:normal'>Chama</span>| ml
+    
+    etl -->|<span style='color:white; font-weight:normal'>Lê/Escreve</span>| db
+    etl -->|<span style='color:white; font-weight:normal'>Armazena</span>| s3
+    ml -->|<span style='color:white; font-weight:normal'>Lê</span>| db
+    
+    equipamentos -->|<span style='color:white; font-weight:normal'>Envia dados</span>| iot
+    iot -->|<span style='color:white; font-weight:normal'>Notifica</span>| etl
+
+    linkStyle default stroke:white,color:white
 ```
-### Diagrama de sequeência
+### Diagrama de sequência
 ```mermaid
 sequenceDiagram
     participant E as Equipamento
@@ -350,16 +396,3 @@ classDiagram
     Equipment "1" -- "many" Alert : generates
     SensorReading "1" -- "1" Prediction : generates
 ``` 
-
-# <a name="c6"></a>6. Referências
-
-* AWS. (2024). *AWS Well-Architected Framework*.
-* Hermes Reply. (2024). *Site Institucional*. [https://www.reply.com/hermes-reply/pt](https://www.reply.com/hermes-reply/pt)
-* Nascimento, F. A., & Barchi, F. (2019). *NASA Turbofan Engine Degradation Simulation Data Set*. NASA.
-* Timescale. (2024). *TimescaleDB Documentation*.
-
-<br>
-
-# <a name="c7"></a>7. Anexos
-
-*Inclua aqui materiais complementares, como screenshots, códigos relevantes, diagramas adicionais, templates de APIs, testes de dados, etc.*
