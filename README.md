@@ -6,9 +6,9 @@
 
 <br>
 
-# Nome do projeto
+# Kairós Ops
 
-## Nome do grupo
+## RevoluxIA
 
 ## 👨‍🎓 Integrantes: 
 - <a href="https://www.linkedin.com/in/moises-cavalcante-aaab24142/">Moises de Lima Cavalcante - RM561909</a>
@@ -23,8 +23,101 @@
 
 ## 📜 Descrição
 
-*Descreva seu projeto com base no texto do PBL (até 600 palavras)*
+Este repositório contém a solução desenvolvida para o Desafio da Sprint 1 e 2, em parceria com a empresa Hermes Reply. O projeto consiste em um sistema embarcado para simular o monitoramento de um equipamento industrial, coletando dados de vibração, temperatura e corrente elétrica em tempo real.
 
+A simulação foi construída utilizando a plataforma Wokwi e a placa de desenvolvimento ESP32, integrando múltiplos sensores para uma análise de dados completa.
+
+## ⚙️ Funcionalidades
+
+O sistema é capaz de monitorar e exibir as seguintes variáveis:
+
+* **Detecção de Vibração:** Utiliza o acelerômetro do MPU6050 para identificar vibrações anormais que excedam um limiar pré-definido.
+* **Monitoramento de Temperatura:** Lê a temperatura diretamente do sensor MPU6050, um dado crucial para evitar o superaquecimento de equipamentos.
+* **Simulação de Corrente Elétrica:** Simula a leitura de um sensor de corrente (Amperes) através de um potenciômetro, permitindo analisar o consumo de energia do equipamento.
+
+***
+
+## 🛠️ Componentes Utilizados
+
+| Componente              | Quantidade | Propósito                                              |
+| :---------------------- | :--------- | :----------------------------------------------------- |
+| **ESP32** | 1          | Microcontrolador principal do projeto                  |
+| **MPU6050** | 1          | Sensor 6-eixos (acelerômetro + giroscópio) e temperatura |
+| **Potenciômetro 10kΩ** | 1          | Simular a entrada de um sensor de corrente             |
+| **Breadboard (Protoboard)** | 1          | Montagem do circuito                                   |
+| **Jumper Wires** | Vários     | Conexão dos componentes                                |
+
+***
+
+## 🔌 Montagem e Circuito
+
+O circuito foi montado para integrar os sensores ao ESP32 através dos protocolos I²C e da leitura analógica.
+
+#### Conexões do MPU6050 (I²C)
+
+| MPU6050 | ESP32     |
+| :------ | :-------- |
+| `VCC`   | `3V3`     |
+| `GND`   | `GND`     |
+| `SCL`   | `GPIO 22` |
+| `SDA`   | `GPIO 21` |
+
+#### Conexões do Potenciômetro (Analógico)
+
+| Potenciômetro         | ESP32      |
+| :-------------------- | :--------- |
+| Pino Esquerdo         | `GND`      |
+| Pino Direito          | `3V3`      |
+| Pino do Meio (Sinal)  | `GPIO 34`  |
+
+#### Esquema Visual
+
+<img src="assets/circuito.png" alt="Circuito" border="0">
+
+***
+
+## 👨‍💻 Software e Bibliotecas
+
+O código foi desenvolvido na linguagem C/C++ utilizando o framework do Arduino. As seguintes bibliotecas são necessárias:
+
+* `Adafruit MPU6050`
+* `Adafruit Unified Sensor`
+* `Wire` (biblioteca padrão, não precisa instalar)
+
+Para executar no Wokwi, adicione as duas primeiras bibliotecas no arquivo `libraries.txt`.
+
+***
+
+## 📋 Como Funciona
+
+O `loop` principal do sistema realiza as seguintes operações a cada 2 segundos:
+
+1.  **Leitura da Corrente:** Lê o valor analógico do pino 34 (0-4095) e o converte para uma faixa de corrente simulada (0 a 40.95 A), representando o consumo do equipamento.
+2.  **Leitura do MPU6050:** Obtém os dados de aceleração e temperatura do sensor.
+3.  **Cálculo da Vibração:** Calcula a diferença absoluta entre a leitura de aceleração atual e a anterior. A magnitude total dessa variação é comparada com um limiar (`LIMIAR_VIBRACAO`). Se for maior, um alerta de vibração é emitido.
+4.  **Exibição dos Dados:** Todos os dados coletados (vibração, status da vibração, temperatura e corrente) são enviados para o Monitor Serial para visualização e coleta.
+
+***
+
+## 📊 Exemplo de Saída (Monitor Serial)
+
+**Vibração**
+</br>
+<img src="assets/monitor_serial_vibracao.png" alt="Print de dados de vibração" border="0">
+
+**Amperagem**
+</br>
+<img src="assets/monitor_serial_amperagem.png" alt="Print de dados da amperagem" border="0">
+
+**Temperatura**
+</br>
+<img src="assets/monitor_serial_temperatura.png" alt="Print de dados da temperatura" border="0">
+
+***
+
+## 📈 Análise Inicial dos Dados
+
+Com os dados coletados no Monitor Serial, foi possível realizar uma análise exploratória inicial.
 
 ## 📁 Estrutura de pastas
 
@@ -32,7 +125,7 @@ Dentre os arquivos e pastas presentes na raiz do projeto, definem-se:
 
 - <b>assets</b>: aqui estão os arquivos relacionados a elementos não-estruturados deste repositório, como imagens.
 
-- <b>document</b>: aqui estão todos os documentos do projeto que as atividades poderão pedir. Na subpasta "other", adicione documentos complementares e menos importantes.
+- <b>document</b>: aqui estão todos os documentos do projeto.
 
 - <b>src</b>: Todo o código fonte criado para o desenvolvimento do projeto.
 
@@ -40,53 +133,12 @@ Dentre os arquivos e pastas presentes na raiz do projeto, definem-se:
 
 ## 🔧 Como executar o código
 
-1. **Pré-requisitos**
-   ```bash
-   Node.js >= 18.0.0
-   PostgreSQL >= 14
-   Docker (opcional)
-   ```
-
-2. **Instalação**
-   ```bash
-   # Clone o repositório
-   git clone [url-do-repositorio]
-
-   # Instale as dependências
-   pnpm install
-
-   # Configure as variáveis de ambiente
-   cp .env.example .env.local
-   ```
-
-3. **Configuração**
-   - Configure as credenciais do Google Earth Engine
-   - Configure as credenciais da NASA FIRMS
-   - Configure o banco de dados PostgreSQL
-   - Configure os sensores IoT
-
-4. **Iniciar o Sistema**
-   ```bash
-   # Desenvolvimento
-   pnpm dev
-
-   # Produção
-   pnpm build
-   pnpm start
-   ```
-
-## 🗃 Histórico de lançamentos
-
-* 0.5.0 - XX/XX/2025
-    * 
-* 0.4.0 - XX/XX/2025
-    * 
-* 0.3.0 - XX/XX/2025
-    * 
-* 0.2.0 - XX/XX/2025
-    * 
-* 0.1.0 - XX/XX/2025
-    *
+1.  Monte o circuito conforme o esquema acima na plataforma Wokwi (ou em hardware real).
+2.  Insira o código do arquivo `/src/esp32/.ino` no editor.
+3.  Certifique-se de que as bibliotecas necessárias estão instaladas ou declaradas no `libraries.txt`.
+4.  Inicie a simulação.
+5.  Abra o **Monitor Serial** com a taxa de 115200 baud.
+6.  **Para simular vibração,** clique no MPU6050 na tela e deslize os eixos x, y e z em acceleration. **Para variar a corrente,** clique e gire o potenciômetro. **Para variar a tempetura,** clique no MPU6050 na tela e deslize em temperature
 
 ## 📋 Licença
 
