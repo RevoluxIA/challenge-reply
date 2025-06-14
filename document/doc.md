@@ -27,7 +27,7 @@ O principal desafio enfrentado por seus clientes, e que este projeto se propõe 
 
 ## 1.2. Objetivos do Projeto
 
-O objetivo principal deste projeto é desenvolver uma proposta de solução de manutenção preditiva, batizada de "Sentinela Industrial", que utilize IA e IoT para monitorar equipamentos, prever falhas e sugerir ações preventivas.
+O objetivo principal deste projeto é desenvolver uma proposta de solução de manutenção preditiva, batizada de "Kairós Ops", que utilize IA e IoT para monitorar equipamentos, prever falhas e sugerir ações preventivas.
 
 * **Sprint 1 - Fundação e Planejamento:** Estabelecer a arquitetura técnica detalhada da solução, selecionar e justificar o stack tecnológico, realizar uma análise de riscos aprofundada e definir o escopo inicial através de User Stories e critérios de validação.
 * **Sprint 2 - Engenharia de Dados:** Implementar o pipeline de dados completo, desde a geração de dados simulados realistas até o armazenamento em um banco de dados otimizado para séries temporais. Realizar a análise exploratória e garantir a qualidade e o tratamento dos dados.
